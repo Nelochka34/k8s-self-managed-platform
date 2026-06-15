@@ -45,7 +45,7 @@ Kubernetes --> App2
 
 Prometheus --> Grafana
 
-Vector --> Loki
+Vector --> OpenSearch
 
 ArgoCD --> Kubernetes
 
