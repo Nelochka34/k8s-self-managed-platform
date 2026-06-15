@@ -4,16 +4,18 @@
 - cp-1      control-plane + etcd
 - cp-2      control-plane + etcd
 - cp-3      control-plane + etcd
-- worker-1  application
-- worker-2  application
-- worker-3  infra
+- worker-1  worker
+- worker-2  worker
+
 
  ## Компоненты платформы: 
     ### Kubernetes
     - Kubespray
     - Kubernetes
     - Containerd
-    - Calico
+
+    ### Ingress 
+    - ingress-nginx
 
     ### Мониторинг
     - Prometeus 
@@ -21,33 +23,48 @@
     - Alertmanaget
 
     ### Логирование
+    - Loki
     - Vector
-    - OpenSearch
 
     ### GitOps
     - ArgoCD
 
+    ### Test application
+    - Online Boutique
+
     ### CI/CD 
     - GitLab CI
 
-    ### Storage 
-    - Longhorn
 
 ```mermaid
 graph TD
 
-Users --> Ingress
+Users --> IngressNginx[ingress-nginx]
 
-Ingress --> Kubernetes
+IngressNginx --> OnlineBoutique[Online Boutique]
 
-Kubernetes --> App1
-Kubernetes --> App2
+ArgoCD --> Kubernetes[Kubernetes Cluster]
+
+GitLabCI[GitLab CI] --> Registry[Container Registry]
+Registry --> ArgoCD
 
 Prometheus --> Grafana
+Prometheus --> Alertmanager
 
-Vector --> OpenSearch
+Vector --> Loki
+OnlineBoutique --> Vector
+Kubernetes --> Vector
 
-ArgoCD --> Kubernetes
+CP1[control-plane-1 + etcd]
+CP2[control-plane-2 + etcd]
+CP3[control-plane-3 + etcd]
 
-Longhorn --> Kubernetes
+W1[worker-1]
+W2[worker-2]
+
+Kubernetes --> CP1
+Kubernetes --> CP2
+Kubernetes --> CP3
+Kubernetes --> W1
+Kubernetes --> W2
 ```
