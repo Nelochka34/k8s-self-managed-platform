@@ -1,0 +1,25 @@
+# Secrets
+*.key
+*.pem
+*.crt
+*.kubeconfig
+secret.yaml
+secrets.yaml
+.env
+.env.*
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+
+# Ansible
+*.retry
+
+# OS / IDE
+.DS_Store
+.vscode/
+.idea/
+
+# Logs
+*.log
