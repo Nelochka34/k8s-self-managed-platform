@@ -33,4 +33,4 @@
 
 ## Документация
 - [Дневник проекта](docs/project-diary.md)
-- [Архитектура платформы] (docs/architecture.md)
+- [Архитектура платформы](docs/architecture.md)
