@@ -34,4 +34,4 @@
 ## Документация
 - [Дневник проекта](docs/project-diary.md)
 - [Архитектура платформы](docs/architecture.md)
-- [Inventory](docs/inventory.md)
+- [Inventory](infrastructure/inventory.md)

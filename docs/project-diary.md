@@ -9,5 +9,5 @@
 ### Шаг 2. Развертывание инфраструктуры
 
 - создан документ [Архитектура платформы](docs/architecture.md)
-- создан документ [Inventory](docs/inventory.md)
+- создан документ [Inventory](infrastructure/inventory.md)
 
