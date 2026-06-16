@@ -8,10 +8,8 @@ spec:
 
   source:
     repoURL: https://github.com/Nelochka34/k8s-self-managed-platform.git
-    targetRevision: HEAD
-    path: release
-    directory:
-      include: kubernetes-manifests.yaml
+    targetRevision: main
+    path: applications/online-boutique/manifests
 
   destination:
     server: https://kubernetes.default.svc
