@@ -130,4 +130,50 @@ kubectl create namespace argocd
 kubectl apply -n argocd \
   -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ```
-
+- проверка: 
+```bash
+kubectl get pods -n argocd
+NAME                                                READY   STATUS    RESTARTS   AGE
+argocd-application-controller-0                     1/1     Running   0          40s
+argocd-applicationset-controller-5bc66cf64c-jgk87   1/1     Running   0          41s
+argocd-dex-server-6757c445bb-pm4pn                  1/1     Running   0          41s
+argocd-notifications-controller-846d8c8b79-t88fn    1/1     Running   0          40s
+argocd-redis-697fdb7798-bfvvr                       1/1     Running   0          40s
+argocd-repo-server-676ccbb646-jbz9w                 0/1     Running   0          40s
+argocd-server-7b8c88c5c5-h6x9q                      0/1     Running   0          40s
+```
+```bash
+kubectl get svc -n argocd
+NAME                                      TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
+argocd-applicationset-controller          ClusterIP   10.233.41.85    <none>        7000/TCP,8080/TCP            86s
+argocd-dex-server                         ClusterIP   10.233.63.50    <none>        5556/TCP,5557/TCP,5558/TCP   86s
+argocd-metrics                            ClusterIP   10.233.13.199   <none>        8082/TCP                     86s
+argocd-notifications-controller-metrics   ClusterIP   10.233.16.242   <none>        9001/TCP                     86s
+argocd-redis                              ClusterIP   10.233.21.141   <none>        6379/TCP                     86s
+argocd-repo-server                        ClusterIP   10.233.46.163   <none>        8081/TCP,8084/TCP            86s
+argocd-server                             ClusterIP   10.233.13.31    <none>        80/TCP,443/TCP               86s
+argocd-server-metrics                     ClusterIP   10.233.43.78    <none>        8083/TCP                     86s
+```
+Чтобы открыть ArgoCD на своем компе я сделала ArgoCD доступным через NodePort: 
+```bash
+kubectl get svc argocd-server -n argocd
+NAME            TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+argocd-server   ClusterIP   10.233.13.31   <none>        80/TCP,443/TCP   13m
+```
+```bash
+kubectl patch svc argocd-server -n argocd \
+  -p '{"spec":{"type":"NodePort"}}'
+```
+```bash
+kubectl get svc argocd-server -n argocd
+NAME            TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)                      AGE
+argocd-server   NodePort   10.233.13.31   <none>        80:31333/TCP,443:32755/TCP   14m
+```
+на скоем компе могу открыть: 
+```
+https://84.252.140.51:31333
+```
+или можно сделать: 
+```bash
+scp el_maksimenko@84.252.140.51:~/.kube/config ~/.kube/config-k8s-course
+```
