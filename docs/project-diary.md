@@ -29,10 +29,15 @@ yc compute instance list
 - 3 etcd узла;
 - 2 worker узла.
 
-Проверка: 
+### Kubespray
+Для автоматизации развертывания Kubernetes выбран Kubespray. 
+
+Выполнена проверка подключения ко всем узлам: 
 ```bash
 ansible -i inventory/k8s-platform/inventory.ini all -m ping
 ```
+Все узлы доступны по ssh и готовы к развертыванию. 
+
 Подготавливаю и настраиваю Kubespray перед установкой: 
 - открыла главный конфиг: nano inventory/k8s-platform/group_vars/k8s_cluster/k8s-cluster.yml
 - задала там: 
@@ -45,3 +50,7 @@ kube_proxy_mode: iptables
 kube_pods_subnet: 10.233.64.0/18
 kube_service_addresses: 10.233.0.0/18
 ```
+Файл inventory.ini был перенесён из рабочей директории Kubespray в репозиторий проекта по пути:
+
+infrastructure/kubespray/inventory.ini 
+[`inventory.ini`](infrastructure/kubespray/inventory.ini)
