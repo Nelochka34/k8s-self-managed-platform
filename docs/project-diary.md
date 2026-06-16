@@ -53,4 +53,4 @@ kube_service_addresses: 10.233.0.0/18
 Файл inventory.ini был перенесён из рабочей директории Kubespray в репозиторий проекта по пути:
 
 infrastructure/kubespray/inventory.ini 
-[`inventory.ini`](k8s-self-managed-platform/infrastructure/kubespray/inventory.ini)
+[`inventory.ini`](../infrastructure/kubespray/inventory.ini)
