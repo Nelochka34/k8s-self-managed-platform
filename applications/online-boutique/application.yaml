@@ -10,6 +10,8 @@ spec:
     repoURL: https://github.com/GoogleCloudPlatform/microservices-demo.git
     targetRevision: HEAD
     path: release
+    directory:
+      include: kubernetes-manifests.yaml
 
   destination:
     server: https://kubernetes.default.svc
@@ -22,4 +24,3 @@ spec:
 
     syncOptions:
       - CreateNamespace=true
-
