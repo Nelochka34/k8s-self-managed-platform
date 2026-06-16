@@ -180,3 +180,8 @@ scp el_maksimenko@84.252.140.51:~/.kube/config ~/.kube/config-k8s-course
 
 ### Шаг 6. Подготовка GitOps для Online Boutique
 
+Создала файл [`application.yaml`](../applications/online-boutique/application.yaml)
+Запустила: 
+```bash
+kubectl apply -f applications/online-boutique/application.yaml 
+```
