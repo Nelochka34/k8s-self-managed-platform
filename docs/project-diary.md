@@ -180,9 +180,20 @@ scp el_maksimenko@84.252.140.51:~/.kube/config ~/.kube/config-k8s-course
 
 ### Шаг 6. Подготовка GitOps для Online Boutique
 
+Из репозитория Google скачиваю манифест kubernetes-manifests.yaml и кладу его в свой: 
+```bash
+mkdir -p applications/online-boutique/manifests
+
+curl -L \
+  https://raw.githubusercontent.com/GoogleCloudPlatform/microservices-demo/main/release/kubernetes-manifests.yaml \
+  -o applications/online-boutique/manifests/kubernetes-manifests.yaml
+```
+
 Создала файл [`application.yaml`](../applications/online-boutique/application.yaml)
 Запустила: 
 ```bash
 kubectl apply -f applications/online-boutique/application.yaml 
 ```
-В ArgoCD UI появилось приложение online-boutique: 
+В ArgoCD UI появилось приложение online-boutique. Приложение успешно синхронизировано: 
+![ArgoCD Synced](../docs/ArgoCD_green.png)
+
