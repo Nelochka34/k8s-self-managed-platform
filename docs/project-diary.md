@@ -177,3 +177,6 @@ https://84.252.140.51:31333
 ```bash
 scp el_maksimenko@84.252.140.51:~/.kube/config ~/.kube/config-k8s-course
 ```
+
+### Шаг 6. Подготовка GitOps для Online Boutique
+
