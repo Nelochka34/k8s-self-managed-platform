@@ -7,7 +7,7 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/GoogleCloudPlatform/microservices-demo.git
+    repoURL: https://github.com/Nelochka34/k8s-self-managed-platform.git
     targetRevision: HEAD
     path: release
     directory:
