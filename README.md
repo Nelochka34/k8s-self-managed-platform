@@ -12,12 +12,15 @@
 ## MVP
 
 В MVP входят:
-- Kubernetes cluster;
-- мониторинг с алертами и дашбордами;
-- централизованное логирование;
-- CI/CD pipeline;
-- инфраструктура как код;
-- развертывание сервисов платформы через манифесты/Helm/GitOps.
+- 3 control-plane узла с etcd
+- 2 worker узла
+- ingress-nginx
+- ArgoCD
+- Prometheus, Grafana, Alertmanager
+- Loki + Vector
+- тестовое приложение Online Boutique
+- GitLab CI
+Для логирования выбран Vector, так как он может собирать и обрабатывать логи кластера и приложений перед отправкой в Loki.
 
 ## План работ
 
