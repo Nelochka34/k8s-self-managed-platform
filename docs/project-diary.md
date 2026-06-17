@@ -321,9 +321,15 @@ kubectl apply -f infrastructure/ingress/argocd-ingress.yaml
 - проверка: 
 ```bash
 kubectl get ingress -A
-NAMESPACE         NAME              CLASS   HOSTS                         ADDRESS        PORTS   AGE
-argocd            argocd            nginx   argocd.10-129-0-100.nip.io    10.129.0.100   80      25s
-monitoring        grafana           nginx   grafana.10-129-0-100.nip.io   10.129.0.100   80      13m
-online-boutique   online-boutique   nginx   shop.10-129-0-100.nip.io      10.129.0.100   80      2m19s
+NAMESPACE         NAME              CLASS   HOSTS                 ADDRESS        PORTS   AGE
+argocd            argocd            nginx   argocd.nelafree.su    10.129.0.100   80      16h
+monitoring        grafana           nginx   grafana.nelafree.su   10.129.0.100   80      16h
+online-boutique   online-boutique   nginx   shop.nelafree.su      10.129.0.100   80      16h
 ```
-Теперь, чтобы открыть это из вне сделаю внешний доступ: 
+Теперь, из браузера можно открывать (домен и NodePort):
+```
+ http://shop.nelafree.su:31832
+ http://grafana.nelafree.su:31832
+ http://argocd.nelafree.su:31832
+```
+
