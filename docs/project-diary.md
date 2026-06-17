@@ -450,3 +450,7 @@ online-boutique   Synced        Healthy
 Проверяю в ArgoCD : 
 ![ArgoCICD](../docs/Argo_CICD.png)
 
+Проверяю приложение в браузере: 
+ввожу http://demo.nelafree.su:31832
+
+![App](../docs/App.png)
