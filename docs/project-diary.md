@@ -346,12 +346,37 @@ helm repo update
 ```
 - сделала файл: 
 ```bash
-
-
-
-- установляваю Loki (в режиме singleBinary + filesystem):
+mkdir -p logging/loki
+nano logging/loki/values.yaml
+```
+- установляваю Loki:
 ```bash
-helm install loki grafana/loki \
+helm install loki grafana/loki-stack \
   -n logging \
-  -f logging/loki/values.yaml
+  --set promtail.enabled=false \
+  --set grafana.enabled=false \
+  --set loki.persistence.enabled=false
+```
+- проверка: 
+```bash
+kubectl get pods -n logging
+NAME     READY   STATUS    RESTARTS   AGE
+loki-0   1/1     Running   0          91s
+```
+
+- добавляю helm repo Vector: 
+```bash
+helm repo add vector https://helm.vector.dev
+helm repo update
+```
+- создаю values-файл: 
+```bash
+mkdir -p logging/vector
+nano logging/vector/values.yaml
+```
+- устанавливаю Vector: 
+```bash
+helm install vector vector/vector \
+  -n logging \
+  -f logging/vector/values.yaml
 ```
