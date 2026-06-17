@@ -380,3 +380,18 @@ helm install vector vector/vector \
   -n logging \
   -f logging/vector/values.yaml
 ```
+- проверка: 
+```bash
+kubectl get pods -n logging
+NAME           READY   STATUS    RESTARTS   AGE
+loki-0         1/1     Running   0          12m
+vector-lf4sr   1/1     Running   0          33s
+vector-rj2j6   1/1     Running   0          33s
+```
+- подключаю Loki в Grafana: 
+Connections → Data sources → Loki
+
+- в Grafana выбираю Explore → {namespace="online-boutique"}
+Вижу логи: 
+![Grafana-logs](../docs/Grafana-logs.png)
+
