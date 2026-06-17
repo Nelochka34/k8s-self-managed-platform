@@ -333,3 +333,25 @@ online-boutique   online-boutique   nginx   shop.nelafree.su      10.129.0.100  
  http://argocd.nelafree.su:31832
 ```
 
+### Шаг 8. Централизованное логирование
+Loki+Vector для централизованного логирования. 
+
+- создала namespace: 
+```bash
+kubectl create namespace logging
+```
+```bash
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+```
+- сделала файл: 
+```bash
+
+
+
+- установляваю Loki (в режиме singleBinary + filesystem):
+```bash
+helm install loki grafana/loki \
+  -n logging \
+  -f logging/loki/values.yaml
+```
