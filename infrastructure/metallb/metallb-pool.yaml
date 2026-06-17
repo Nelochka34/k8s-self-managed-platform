@@ -1,0 +1,17 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: yc-internal-pool
+  namespace: metallb-system
+spec:
+  addresses:
+    - 10.129.0.100-10.129.0.110
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: yc-l2
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+    - yc-internal-pool

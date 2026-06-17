@@ -197,3 +197,133 @@ kubectl apply -f applications/online-boutique/application.yaml
 В ArgoCD UI появилось приложение online-boutique. Приложение успешно синхронизировано: 
 ![ArgoCD Synced](../docs/ArgoCD_green.png)
 
+
+### Шаг 7. Установка Prometheus + Grafana + Alertmanager
+
+- Создаю namespace: 
+```bash
+kubectl create namespace monitoring
+```
+- Добавляю Helm repo:
+```bash
+helm repo add prometheus-community \
+https://prometheus-community.github.io/helm-charts
+
+helm repo update
+```
+- установка: 
+```bash
+helm install monitoring \
+prometheus-community/kube-prometheus-stack \
+-n monitoring
+```
+- проверка: 
+```bash
+kubectl get pods -n monitoring
+NAME                                                     READY   STATUS    RESTARTS   AGE
+alertmanager-monitoring-kube-prometheus-alertmanager-0   2/2     Running   0          11m
+monitoring-grafana-7c545db998-mlw49                      3/3     Running   0          11m
+monitoring-kube-prometheus-operator-84f99b8df-bmwz4      1/1     Running   0          11m
+monitoring-kube-state-metrics-5bdfc5f794-rc4vf           1/1     Running   0          11m
+monitoring-prometheus-node-exporter-4ml7s                1/1     Running   0          11m
+monitoring-prometheus-node-exporter-c6ckr                1/1     Running   0          11m
+monitoring-prometheus-node-exporter-h9bxc                1/1     Running   0          11m
+monitoring-prometheus-node-exporter-jvc9q                1/1     Running   0          11m
+monitoring-prometheus-node-exporter-mxvdh                1/1     Running   0          11m
+prometheus-monitoring-kube-prometheus-prometheus-0       2/2     Running   0          11m
+```
+открою доступ к Grafana через NodePort: 
+```bash
+kubectl get svc -n monitoring
+
+NAME                                      TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
+alertmanager-operated                     ClusterIP   None            <none>        9093/TCP,9094/TCP,9094/UDP   17m
+monitoring-grafana                        ClusterIP   10.233.13.90    <none>        80/TCP                       17m
+monitoring-kube-prometheus-alertmanager   ClusterIP   10.233.19.177   <none>        9093/TCP,8080/TCP            17m
+monitoring-kube-prometheus-operator       ClusterIP   10.233.46.83    <none>        443/TCP                      17m
+monitoring-kube-prometheus-prometheus     ClusterIP   10.233.45.124   <none>        9090/TCP,8080/TCP            17m
+monitoring-kube-state-metrics             ClusterIP   10.233.60.101   <none>        8080/TCP                     17m
+monitoring-prometheus-node-exporter       ClusterIP   10.233.61.15    <none>        9100/TCP                     17m
+prometheus-operated                       ClusterIP   None            <none>        9090/TCP                     17m
+```
+
+```bash
+kubectl patch svc monitoring-grafana -n monitoring \
+-p '{"spec":{"type":"NodePort"}}'
+```
+смотрю порт, который открыт: 
+```bash
+kubectl get svc monitoring-grafana -n monitoring
+NAME                 TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+monitoring-grafana   NodePort   10.233.13.90   <none>        80:31449/TCP   19m
+```
+Т.е чтобы открыть  Grafana: 
+```
+http://84.252.140.51:31449
+```
+ИНАЧЕ, 
+Чтобы публиковать все сервисы через ingress-nginx я установлю MetalLB, тогда ingress-nginx-controller получит внешний IP, после чего с использованием nip.io будут доступны все сервисы. 
+- установлю MetalL: 
+```bash
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
+```
+```bash
+kubectl get pods -n metallb-system
+NAME                          READY   STATUS    RESTARTS   AGE
+controller-7d69cc69fd-zdktq   1/1     Running   0          28s
+speaker-9l8xh                 1/1     Running   0          27s
+speaker-jf9w6                 1/1     Running   0          27s
+speaker-w855m                 1/1     Running   0          27s
+speaker-wm96r                 1/1     Running   0          27s
+speaker-zpb68                 1/1     Running   0          27s
+```
+- настрою IPAddressPool 
+```bash
+nano infrastructure/metallb/metallb-pool.yaml
+```
+- применить: 
+```bash
+kubectl apply -f infrastructure/metallb/metallb-pool.yaml
+```
+- проверяю: 
+```bash
+kubectl get svc -n ingress-nginx
+NAME                                 TYPE           CLUSTER-IP      EXTERNAL-IP    PORT(S)                      AGE
+ingress-nginx-controller             LoadBalancer   10.233.45.111   10.129.0.100   80:31832/TCP,443:31102/TCP   5h40m
+ingress-nginx-controller-admission   ClusterIP      10.233.32.154   <none>         443/TCP                      5h40m
+```
+Т.о у ingress-nginx-controller появился EXTERNAL-IP 10.129.0.100 (это будет внутренний IP)
+
+- создам Ingress для Grafana 
+```bash
+nano infrastructure/ingress/grafana-ingress.yaml
+```
+- применяю: 
+```bash
+kubectl apply -f infrastructure/ingress/grafana-ingress.yaml
+```
+- создам Ingress для Online Boutique
+```bash
+nano infrastructure/ingress/online-boutique-ingress.yaml
+```
+- применяю: 
+```bash
+kubectl apply -f infrastructure/ingress/online-boutique-ingress.yaml
+```
+- создаю Ingress для ArgoCD: 
+```bash
+nano infrastructure/ingress/argocd-ingress.yaml
+```
+- применяю: 
+```bash
+kubectl apply -f infrastructure/ingress/argocd-ingress.yaml
+```
+- проверка: 
+```bash
+kubectl get ingress -A
+NAMESPACE         NAME              CLASS   HOSTS                         ADDRESS        PORTS   AGE
+argocd            argocd            nginx   argocd.10-129-0-100.nip.io    10.129.0.100   80      25s
+monitoring        grafana           nginx   grafana.10-129-0-100.nip.io   10.129.0.100   80      13m
+online-boutique   online-boutique   nginx   shop.10-129-0-100.nip.io      10.129.0.100   80      2m19s
+```
+Теперь, чтобы открыть это из вне сделаю внешний доступ: 
