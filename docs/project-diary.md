@@ -447,6 +447,13 @@ NAME              SYNC STATUS   HEALTH STATUS
 demo-app          Synced        Healthy
 online-boutique   Synced        Healthy
 ```
+```bash
+kubectl get pods -n demo-app
+NAME                       READY   STATUS    RESTARTS   AGE
+demo-app-f668848d7-24s8z   1/1     Running   0          7m55s
+demo-app-f668848d7-f9rpm   1/1     Running   0          7m55s
+```
+
 Проверяю в ArgoCD : 
 ![ArgoCICD](../docs/Argo_CICD.png)
 
