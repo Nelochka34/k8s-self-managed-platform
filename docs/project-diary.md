@@ -395,3 +395,22 @@ Connections → Data sources → Loki
 Вижу логи: 
 ![Grafana-logs](../docs/Grafana-logs.png)
 
+### Шаг 9. CI/CD пайплайн для приложения
+
+Я предлагаю сделать не на Online Boutique, а на своем маленьком demo-app. CI/CD лучше показать на своем приложении. 
+GitLab CI заменяю на GitHub Actions. 
+
+- создаю приложение: 
+```bash
+mkdir -p apps/demo-app
+mkdir -p applications/demo-app
+```
+```bash
+nano apps/demo-app/index.html
+nano apps/demo-app/Dockerfile
+```
+- создаю GitHub Actions workflow
+```bash
+mkdir -p .github/workflows
+nano .github/workflows/demo-app-ci.yaml
+```
