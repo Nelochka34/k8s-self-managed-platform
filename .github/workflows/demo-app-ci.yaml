@@ -13,7 +13,7 @@ permissions:
   packages: write
 
 env:
-  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/demo-app
+  IMAGE_NAME: ghcr.io/nelochka34/demo-app
 
 jobs:
   build-and-push:
