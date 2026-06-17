@@ -414,3 +414,39 @@ nano apps/demo-app/Dockerfile
 mkdir -p .github/workflows
 nano .github/workflows/demo-app-ci.yaml
 ```
+- запушила в репозиторий
+- в GitHub: Actions → Build and push demo-app image статус Success
+- проверяю появился ли репозиторий: Repository - Packages
+Вижу Packages: 
+![Packages](../docs/Packages.png)
+
+- создаю Kubernetes манифест для demo-app
+```bash
+nano applications/demo-app/deployment.yaml
+```
+```bash
+nano applications/demo-app/service.yaml
+```
+```bash
+nano applications/demo-app/ingress.yaml
+```
+```bash
+nano applications/demo-app/kustomization.yaml
+```
+```bash
+nano applications/demo-app/application.yaml
+```
+- запускаю: 
+```bash
+kubectl apply -f applications/demo-app/application.yaml
+```
+- проверяю: 
+```bash
+kubectl get application -n argocd
+NAME              SYNC STATUS   HEALTH STATUS
+demo-app          Synced        Healthy
+online-boutique   Synced        Healthy
+```
+Проверяю в ArgoCD : 
+![ArgoCICD](../docs/Argo_CICD.png)
+
