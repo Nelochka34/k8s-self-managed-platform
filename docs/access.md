@@ -6,7 +6,7 @@
 
 [Grafana](http://grafana.nelafree.su:31832)
 
-[ArgoCD](http://argocd.nelafree.su:31832)
+[ArgoCD](http://argocd.nelafree.su:31832). https://89.169.176.142:31333
 
 ## Учетные данные:
 
